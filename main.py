@@ -18,9 +18,12 @@ def change(s, i):
         l = len(s1)
         sn = s + 'e'
         if d[i][1] != '0':
-           s = sn[0:num] + d[i][1] + sn[num+l:-1]
+            s = sn[0:num] + d[i][1] + sn[num+l:-1]
         else:
-           s = sn[0:num] + sn[num+l:-1]
+            if num != 0:
+                s = sn[0:num] + sn[num+l:-1]
+            else:
+                s = s
     return s
 
 
