@@ -16,3 +16,5 @@ def change(s,i):
         sn = s + 'e'
         s = sn[0:num] + d[i][1] + sn[num+l:-1]
     return(s)
+for j in range (0,k):
+    s=change(s,j)
