@@ -4,9 +4,12 @@ with open('sample.txt') as file:
     for line in file.readlines():
         if line.find(' ->. ') != -1:
             d[k] = line.rstrip().split(' ->. ')
+            d[k].append('stop')
         else:
             d[k] = line.rstrip().split(' -> ')
+            d[k].append('continue')
         k += 1
+
 
 g = open('intr.txt', 'r')
 s = g.readline()
@@ -28,11 +31,19 @@ def change(s, i):
         else:
 
                 s = sn[0:num] + sn[num+l:-1]
-
     return s
+
+
+def go_on(d, i):
+    if d[i][2] == 'stop':
+        return False
+    else:
+        return True
 
 
 for j in range(0, k):
     s = change(s, j)
+    if go_on(d, j) is False:
+        break
 
 print(s)
