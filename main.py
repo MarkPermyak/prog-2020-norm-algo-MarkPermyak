@@ -1,2 +1,2 @@
 print("privet")
-print("kak dela")
+print("kak dela?")
