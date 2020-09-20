@@ -1,4 +1,5 @@
 k = 0
+j = 0
 with open('sample.txt') as file:
     d = dict()
     for line in file.readlines():
@@ -15,35 +16,49 @@ g = open('intr.txt', 'r')
 s = g.readline()
 
 
-def change(s, i):
+def change(stroka, i):
     s1 = d[i][0]
-    num = s.find(s1)
+    num = stroka.find(s1)
     if s1 == '0':
         num = 0
     if num > -1:
         if s1 == '0':
-            l = 0
+            m = 0
         else:
-            l = len(s1)
-        sn = s + 'e'
+            m = len(s1)
+        sn = stroka + 'e'
         if d[i][1] != '0':
-            s = sn[0:num] + d[i][1] + sn[num+l:-1]
+            stroka = sn[0:num] + d[i][1] + sn[num+m:-1]
         else:
+            stroka = sn[0:num] + sn[num+m:-1]
+    return stroka
 
-                s = sn[0:num] + sn[num+l:-1]
-    return s
 
-
-def go_on(d, i):
-    if d[i][2] == 'stop':
+def go_on(dictionary, i):
+    if dictionary[i][2] == 'stop':
         return False
     else:
         return True
 
 
-for j in range(0, k):
-    s = change(s, j)
-    if go_on(d, j) is False:
-        break
+def repeat(stroka, i):
+    s1 = d[i][0]
+    num = stroka.find(s1)
+    if s1 == '0':
+        num = 0
+    if num != -1:
+        return True
+    else:
+        return False
+
+
+while j < k:
+    while repeat(s, j) is True:
+        s = change(s, j)
+        if go_on(d, j) is False:
+            j = k
+            break
+        j = 0
+    j += 1
 
 print(s)
