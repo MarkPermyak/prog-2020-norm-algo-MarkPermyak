@@ -7,4 +7,4 @@ life -> death
 bwck on top -> sleep
 g -> 0
 the -> end
-0 ->. konec
+0 ->. do_svidaniya
