@@ -28,63 +28,69 @@ initial_string = initial_file.readline()
 new_string = initial_string
 
 
-def change(string, i):
-    s1 = list_of_substitutions[i][0]
-    num = string.find(s1)
-    if s1 == '0':
+def replace_substring(string, num_substring):
+    replaced_substring = list_of_substitutions[num_substring][0]
+    ind = string.find(replaced_substring)
+    if replaced_substring == '0':
         # если левая часть подстановки - пустое слово
-        num = 0
-    if num > -1:
+        ind = 0
+    if ind > -1:
         # если подстрока нашлась
-        if s1 == '0':
-            m = 0
+        if replaced_substring == '0':
+            len_of_replaced_substring = 0
         else:
-            m = len(s1)
-        sn = string + 'e'
+            len_of_replaced_substring = len(replaced_substring)
+        string = string + 'e'
         # добавим в конец символ (который вскоре все равно обрежется) для корректной работы функции
-        if list_of_substitutions[i][1] != '0':
-            string = sn[0:num] + list_of_substitutions[i][1] + sn[num+m:-1]
+        if list_of_substitutions[num_substring][1] != '0':
+            string = string[0:ind] + list_of_substitutions[num_substring][1] + string[ind+len_of_replaced_substring:-1]
             # вырезаем левую часть подстановки и заменяем правой
         else:
-            string = sn[0:num] + sn[num+m:-1]
+            string = string[0:ind] + string[ind+len_of_replaced_substring:-1]
             # просто вырезаем левую часть подстановки
     return string
 
 
-def is_substitution_final(dictionary, i):
-    if dictionary[i][2] == 'stop':
+def is_substitution_final(list_of_string, number_of_substring):
+    if list_of_string[number_of_substring][2] == 'stop':
         # проверка на незаключительность
         return True
     else:
         return False
 
 
-def repeat(string, i):
-    s1 = list_of_substitutions[i][0]
-    num = string.find(s1)
-    if s1 == '0':
-        num = 0
-    if num != -1:
+def repeat(string, number_of_substring):
+    replaced_substring = list_of_substitutions[number_of_substring][0]
+    ind = string.find(replaced_substring)
+    if replaced_substring == '0':
+        ind = 0
+    if ind != -1:
         # проверка нахождения левой части подстановки в строчке
         return True
     else:
         return False
 
 
-j = 0
-while j < number_of_substitutions:
-    # пока не дойдем до конца схемы
-    while repeat(new_string, j) is True:
+def make_a_substitute(string):
+    global current_string
+    while repeat(string, current_string) is True:
         # делать подстановку пока делается (если не завершающая)
-        new_string = change(new_string, j)
-        if is_substitution_final(list_of_substitutions, j) is True:
-            j = number_of_substitutions
+        string = replace_substring(string, current_string)
+        if is_substitution_final(list_of_substitutions, current_string) is True:
+            current_string = number_of_substitutions
             break
             # если подстановка оказалась завершающей, закончить весь цикл после первого выполнения
-        j = 0
+        current_string = 0
         # начать схему заново, чтоб не пропустить более приоритетные подстановки
-    j += 1
+    return string
+
+
+current_string = 0
+while current_string < number_of_substitutions:
+    # пока не дойдем до конца схемы
+    new_string = make_a_substitute(new_string)
+    current_string += 1
+
     # если все подстановки до этого выполнены, спускаемся ниже
 
-print(number_of_substitutions)
 result_file.write(new_string)
