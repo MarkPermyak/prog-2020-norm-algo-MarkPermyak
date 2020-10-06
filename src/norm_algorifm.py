@@ -51,45 +51,34 @@ def replace_substring(string, num_substring):
     return string
 
 
-def is_substitution_final(list_of_string, number_of_substring):
-    if list_of_string[number_of_substring][2] == 'stop':
-        # проверка на незаключительность
-        return True
-    else:
-        return False
+def is_substitution_final(list_of_string, num_substring):
+    return list_of_string[num_substring][2] == 'stop'
 
 
-def repeat(string, number_of_substring):
-    replaced_substring = list_of_substitutions[number_of_substring][0]
-    ind = string.find(replaced_substring)
-    if replaced_substring == '0':
-        ind = 0
-    if ind != -1:
-        # проверка нахождения левой части подстановки в строчке
-        return True
-    else:
-        return False
+def repeat(string, num_substring):
+    return list_of_substitutions[num_substring][0] in string or list_of_substitutions[num_substring][0] == '0'
+    # проверка нахождения левой части подстановки в строчке
 
 
 def make_a_substitute(string):
-    global current_string
-    while repeat(string, current_string) is True:
+    global number_of_current_string
+    while repeat(string, number_of_current_string) is True:
         # делать подстановку пока делается (если не завершающая)
-        string = replace_substring(string, current_string)
-        if is_substitution_final(list_of_substitutions, current_string) is True:
-            current_string = number_of_substitutions
+        string = replace_substring(string, number_of_current_string)
+        if is_substitution_final(list_of_substitutions, number_of_current_string) is True:
+            number_of_current_string = number_of_substitutions
             break
             # если подстановка оказалась завершающей, закончить весь цикл после первого выполнения
-        current_string = 0
+        number_of_current_string = 0
         # начать схему заново, чтоб не пропустить более приоритетные подстановки
     return string
 
 
-current_string = 0
-while current_string < number_of_substitutions:
+number_of_current_string = 0
+while number_of_current_string < number_of_substitutions:
     # пока не дойдем до конца схемы
     new_string = make_a_substitute(new_string)
-    current_string += 1
+    number_of_current_string += 1
 
     # если все подстановки до этого выполнены, спускаемся ниже
 
